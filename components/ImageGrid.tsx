@@ -1,38 +1,39 @@
 import { View, Image, TouchableOpacity, FlatList } from 'react-native';
 import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { ImageItem } from '../mockData';
 
-interface ImageItem {
-  id: string;
-  uri: string;
+interface ImageGridProps {
+  initialData: ImageItem[];
 }
 
-const ImageGrid = () => {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+const ImageGrid = ({ initialData }: ImageGridProps) => {
+  // Mock data following the required structure
+  const [images, setImages] = useState<ImageItem[]>(initialData);
 
-  // Sample images - using picsum for placeholder images
-  const images: ImageItem[] = [
-    { id: '1', uri: 'https://picsum.photos/400/300?random=1' },
-    { id: '2', uri: 'https://picsum.photos/400/300?random=2' },
-    { id: '3', uri: 'https://picsum.photos/400/300?random=3' },
-    { id: '4', uri: 'https://picsum.photos/400/300?random=4' },
-    { id: '5', uri: 'https://picsum.photos/400/300?random=5' },
-    { id: '6', uri: 'https://picsum.photos/400/300?random=6' },
-  ];
+  const handleSelect = (id: string) => {
+    setImages(prevImages =>
+      prevImages.map(img =>
+        img.id === id
+          ? { ...img, isSelected: !img.isSelected }
+          : { ...img, isSelected: false }
+      )
+    );
+  };
 
   const renderItem = ({ item }: { item: ImageItem }) => {
-    const isSelected = selectedId === item.id;
+    const isSelected = item.isSelected;
 
     return (
       <TouchableOpacity
         className="w-[31%] aspect-square mb-3"
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => handleSelect(item.id)}
         activeOpacity={0.8}
       >
         <View className="relative w-full h-full rounded-xl overflow-hidden">
           {/* Image */}
           <Image
-            source={{ uri: item.uri }}
+            source={{ uri: item.image }}
             className="w-full h-full"
             resizeMode="cover"
           />

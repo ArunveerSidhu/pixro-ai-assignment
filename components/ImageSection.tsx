@@ -1,8 +1,14 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 import ImageGrid from './ImageGrid';
+import { ImageItem } from '../mockData';
 
-const ImageSection = ({ title }: { title: string }) => {
+interface ImageSectionProps {
+  title: string;
+  data: ImageItem[];
+}
+
+const ImageSection = ({ title, data }: ImageSectionProps) => {
   return (
     <View>
       {/* Section Title */}
@@ -11,7 +17,7 @@ const ImageSection = ({ title }: { title: string }) => {
       </Text>
 
       {/* Image Grid */}
-      <ImageGrid />
+      <ImageGrid initialData={data} />
     </View>
   );
 };
